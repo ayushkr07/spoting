@@ -1,8 +1,41 @@
+
+
 {% extends 'spotingapp/base.html' %}
 
 {% block content %}
-<div class="container bg-dark text-white">
-    <h1>hello</h1>
-</div>
+    {% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-warning alert-dismissable" role="alert">
+            <button class="close" data-dismiss="alert">
+                <small><sup></sup></small>
+            </button>
+            {{message}}
+        </div>
+    {% endfor %}
+    {% endif %}
 
-{% endblock %} 
+    {% if all_items %}
+        <table class="table table-bordered">
+        {% for things in all_items %}
+            {% if things.completed %}
+                <tr>
+                    <td class="striker"><a href="#">{{ things.item }}</a></td>
+                    <td><center><a href="{% url 'un_cross' things.id %}">Done</a></center></td>
+                    <td><center><a href="{% url 'delete' things.id %}">Delete</a></center></td>
+                    <td><center><a href="{% url 'edit' things.id %}">Edit</a></center></td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td><a href="#">{{ things.item }}</a></td>
+                    <td><center><a href="{% url 'cross' things.id %}">Todo</a></center></td>
+                    <td><center><a href="{% url 'delete' things.id %}">Delete</a></center></td>
+                    <td><center><a href="{% url 'edit' things.id %}">Edit</a></center></td>
+                </tr>
+            {% endif %}
+        {% endfor %}
+        </table>
+
+    {% endif %}
+
+
+{% endblock%}
